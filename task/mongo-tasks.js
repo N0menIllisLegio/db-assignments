@@ -374,7 +374,7 @@ async function task_1_14(db) {
  *       https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/
  */
 async function task_1_15(db) {
-    const ordersInMonths = await db.collection('orders').aggregate([
+    const result = await db.collection('orders').aggregate([
         {
             $match: {
                 $expr: {
@@ -389,26 +389,123 @@ async function task_1_15(db) {
         },
         {
             $group: {
-                "_id": "$month", 
-                "orders": { "$sum": 1 }
+                "_id": null, 
+                "January": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 1] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "February": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 2] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "March": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 3] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "April": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 4] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "May": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 5] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "June": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 6] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "July": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 7] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "August": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 8] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "September": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 9] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "October": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 10] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "November": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 11] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                },
+                "December": { 
+                    "$sum": {
+                        "$cond": {
+                            "if": { $eq: ["$month", 12] }, 
+                                'then': 1, 
+                                'else': 0
+                        } 
+                    }
+                }
+            },
+        },
+        {
+            $project: {
+                _id: 0
             }
         }
-    ]).toArray();
-
-    const result = {
-        "January": ordersInMonths.filter(e => e._id === 1)[0].orders,
-        "February": ordersInMonths.filter(e => e._id === 2)[0].orders,
-        "March": ordersInMonths.filter(e => e._id === 3)[0].orders,
-        "April": ordersInMonths.filter(e => e._id === 4)[0].orders,
-        "May": ordersInMonths.filter(e => e._id === 5)[0].orders,
-        "June": ordersInMonths.filter(e => e._id === 6)[0].orders,
-        "July": ordersInMonths.filter(e => e._id === 7)[0].orders,
-        "August": ordersInMonths.filter(e => e._id === 8)[0].orders,
-        "September": ordersInMonths.filter(e => e._id === 9)[0].orders,
-        "October": ordersInMonths.filter(e => e._id === 10)[0].orders,
-        "November": ordersInMonths.filter(e => e._id === 11)[0].orders,
-        "December": ordersInMonths.filter(e => e._id === 12)[0].orders,
-    }
+    ]).next();
 
     return result;
 }
