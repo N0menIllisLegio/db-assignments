@@ -22,6 +22,10 @@
  * */
 async function before(db) {
     await db.collection('employees').ensureIndex({CustomerID: 1});
+    await db.collection('customers').ensureIndex({CustomerID: 1});
+    await db.collection('orders').ensureIndex({OrderID: 1});
+    await db.collection('order-details').ensureIndex({OrderID: 1});
+    await db.collection('products').ensureIndex({ProductID: 1});
 }
 
 /**
